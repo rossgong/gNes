@@ -11,7 +11,7 @@ type Processor struct {
 	memory *memory.CPUMap
 }
 
-func (proc *Processor) initializeRegisters() {
+func (proc *Processor) InitializeRegisters() {
 	//SP initally points to the first free byte on the first page.
 	//SP is decrmented so this would be 0xFF (0x01FF)
 	proc.registers[StackPointer] = 0xFF
