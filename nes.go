@@ -2,14 +2,10 @@ package gnes
 
 import (
 	"gongaware.org/gNES/cpu"
-	"gongaware.org/gNES/ram"
-)
-
-type (
-	Address uint16
+	"gongaware.org/gNES/memory"
 )
 
 type System struct {
-	cpu cpu.Processor
-	ram ram.Memory
+	cpu       cpu.Processor
+	cpuMemory memory.CPUMap
 }

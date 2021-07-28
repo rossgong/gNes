@@ -1,6 +1,8 @@
 package cpu
 
 import (
+	"log"
+
 	"gongaware.org/gNES/memory"
 )
 
@@ -14,8 +16,15 @@ func (cpu Processor) AccumulatorMode(operandAddr memory.Address) (byte, byte) {
 
 //Absolute Modes
 func (cpu Processor) absoluteOffsetMode(operandAddr memory.Address, offset byte) (byte, byte) {
-	address := cpu.memory.ReadAddress(operandAddr + memory.Address(offset))
-	val := cpu.memory.Read(address)
+	operand, err := cpu.memory.ReadAddress(operandAddr + memory.Address(offset))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	val, err := cpu.memory.Read(operand)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return val, 2
 }
 
@@ -33,26 +42,52 @@ func (cpu Processor) AbsoluteYMode(operandAddr memory.Address) (byte, byte) {
 
 //Immediate Mode
 func (cpu Processor) ImmediateMode(operandAddr memory.Address) (byte, byte) {
-	return cpu.memory.Read(operandAddr), 1
+	operand, err := cpu.memory.Read(operandAddr)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return operand, 1
 }
 
 //Indirect Mode
 func (cpu Processor) IndirectMode(operandAddr memory.Address) (memory.Address, byte) {
-	return cpu.memory.ReadAddress(cpu.memory.ReadAddress(operandAddr)), 2
+	operand, err := cpu.memory.ReadAddress(operandAddr)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	data, err := cpu.memory.ReadAddress(operand)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return data, 2
 }
 
 //Relative Mode
 //Very unsafe
 func (cpu Processor) RelativeMode(operandAddr memory.Address) (memory.Address, byte) {
 	//Convert to int32 in order to preform addition with negative values
-	offset := int32(cpu.memory.ReadSigned(operandAddr))
+	operand, err := cpu.memory.ReadSigned(operandAddr)
+	if err != nil {
+		log.Fatal(err)
+	}
+	offset := int32(operand)
 	return memory.Address(int32(cpu.pc) + offset), 1
 }
 
 //Zero Page Mode
 func (cpu Processor) zeroModeOffset(operandAddr memory.Address, offset byte) (byte, byte) {
-	zeroPageAddress := memory.Address(cpu.memory.Read(operandAddr) + offset)
-	return cpu.memory.Read(zeroPageAddress), 1
+	operand, err := cpu.memory.Read(operandAddr)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	zeroPageAddress := memory.Address(operand + offset)
+	data, err := cpu.memory.Read(zeroPageAddress)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return data, 1
 }
 
 func (cpu Processor) ZeroMode(operandAddr memory.Address) (byte, byte) {
@@ -68,11 +103,27 @@ func (cpu Processor) ZeroYMode(operandAddr memory.Address) (byte, byte) {
 }
 
 func (cpu Processor) ZeroIndirectXMode(operandAddr memory.Address) (memory.Address, byte) {
-	locationOfAddress := cpu.memory.Read(operandAddr) + cpu.registers[X]
-	return cpu.memory.ReadAddress(memory.Address(locationOfAddress)), 1
+	operand, err := cpu.memory.Read(operandAddr)
+	if err != nil {
+		log.Fatal(err)
+	}
+	locationOfAddress := operand + cpu.registers[X]
+	data, err := cpu.memory.ReadAddress(memory.Address(locationOfAddress))
+	if err != nil {
+		log.Fatal(err)
+	}
+	return data, 1
 }
 
 func (cpu Processor) ZeroIndirectYMode(operandAddr memory.Address) (memory.Address, byte) {
-	locationOfAddress := cpu.memory.Read(operandAddr)
-	return cpu.memory.ReadAddress(memory.Address(locationOfAddress)) + memory.Address(cpu.registers[Y]), 1
+	operand, err := cpu.memory.Read(operandAddr)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	data, err := cpu.memory.ReadAddress(memory.Address(operand))
+	if err != nil {
+		log.Fatal(err)
+	}
+	return data + memory.Address(cpu.registers[Y]), 1
 }
