@@ -24,7 +24,7 @@ func (memoryMap CPUMap) Read(address Address) (byte, error) {
 		return memoryMap.internalRAM[address%0x0800], nil
 	case address < 0x4000:
 		//PPU Registers + mirros
-		return memoryMap.ppu.Registers[address%0x8]
+		return memoryMap.ppu.Registers[address%0x8], nil
 	case address < 0x4018:
 		//APU/IO Registers
 		return notSupported(address, "APU Registers")
