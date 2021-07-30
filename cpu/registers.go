@@ -38,20 +38,20 @@ const (
 	Gives the appropriate bit number for the status flag
 */
 const (
-	//0	Carry bit (1 means carry)
+	//0	Carry flag (1 means carry)
 	carry = iota
-	//1	Zero bit (1 means zero)
+	//1	Zero flag (1 means zero)
 	zero
-	//2	IRQ bit (1 means disable)
+	//2	IRQ flag (1 means disable)
 	irq
-	//3	Decimal bit Mode (1 means on)
+	//3	Decimal flag Mode (1 means on)
 	decimal
-	//4	Break bit (1 means Reset)
+	//4	Break flag (1 means Reset)
 	reset
-	//5	UNUSED bit (ALWAYS 1)
+	//5	UNUSED flag (ALWAYS 1)
 	unused
-	//6	Overflow bit (1 means overflow)
+	//6	Overflow flag (1 means overflow)
 	overflow
-	//7	Negative bit (1 means negative)
+	//7	Negative flag (1 means negative)
 	negative
 )
