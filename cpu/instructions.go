@@ -2,6 +2,8 @@ package cpu
 
 /*
 A = A + operand + carry bit
+
+Sets flags Carry, Zero, Overflow, Negative
 */
 func (cpu *Processor) AddWithCarry(operand byte) {
 	//store A in order to set flags
@@ -10,13 +12,25 @@ func (cpu *Processor) AddWithCarry(operand byte) {
 	//Carry bit is in bit 0 so we can just mask it out and add it
 	cpu.registers[A] += operand + getBits(cpu.registers[Status], CarryFlag)
 
-	//set flags Carry, Zero, Overflow, Negative
-	//Can use equal to set here as the mask start off at zero
 	cpu.setCarryFlag(cpu.registers[A], oldA)
 	cpu.setZeroFlag(cpu.registers[A])
 	cpu.setOverflowFlag(cpu.registers[A], oldA, operand)
 	cpu.setNegativeFlag(cpu.registers[A])
 }
+
+/*
+A = A & operand
+
+Sets flags Zero, Negative
+*/
+func (cpu *Processor) And(operand byte) {
+	cpu.registers[A] &= operand
+
+	cpu.setZeroFlag(cpu.registers[A])
+	cpu.setNegativeFlag(cpu.registers[A])
+}
+
+func (cpu *Processor) ShiftLeft(operand byte)
 
 //Utility functions
 func (cpu *Processor) setStatusFlags(mask byte) {
