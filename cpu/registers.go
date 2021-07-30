@@ -31,3 +31,27 @@ const (
 	//Number of normal CPU registers (excludes PC)
 	numRegisters
 )
+
+/*
+	Status Flags
+
+	Gives the appropriate bit number for the status flag
+*/
+const (
+	//0	Carry bit (1 means carry)
+	carry = iota
+	//1	Zero bit (1 means zero)
+	zero
+	//2	IRQ bit (1 means disable)
+	irq
+	//3	Decimal bit Mode (1 means on)
+	decimal
+	//4	Break bit (1 means Reset)
+	reset
+	//5	UNUSED bit (ALWAYS 1)
+	unused
+	//6	Overflow bit (1 means overflow)
+	overflow
+	//7	Negative bit (1 means negative)
+	negative
+)
