@@ -1,6 +1,8 @@
 package cpu
 
 /*
+ADC
+
 A = A + operand + carry bit
 
 Sets flags Carry, Zero, Overflow, Negative
@@ -19,6 +21,8 @@ func (cpu *Processor) AddWithCarry(operand byte) {
 }
 
 /*
+AND
+
 A = A & operand
 
 Sets flags Zero, Negative
@@ -30,7 +34,22 @@ func (cpu *Processor) And(operand byte) {
 	cpu.setNegativeFlag(cpu.registers[A])
 }
 
-func (cpu *Processor) ShiftLeft(operand byte)
+/*
+ASL
+
+out = data << 1 (bit shifted out goes into carry)
+*/
+func (cpu *Processor) ShiftLeft(operand byte) byte {
+	result := operand << 1
+
+	cpu.setNegativeFlag(result)
+	cpu.setZeroFlag(result)
+	if getBits(operand, 1<<7) != 0 {
+		cpu.setStatusFlags(CarryFlag)
+	} else {
+		cpu.clearStatusFlags(CarryFlag)
+	}
+}
 
 //Utility functions
 func (cpu *Processor) setStatusFlags(mask byte) {
