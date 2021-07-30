@@ -39,19 +39,19 @@ const (
 */
 const (
 	//0	Carry flag (1 means carry)
-	carry = iota
+	CarryFlag = iota
 	//1	Zero flag (1 means zero)
-	zero
+	ZeroFlag
 	//2	IRQ flag (1 means disable)
-	irq
+	IrqFlag
 	//3	Decimal flag Mode (1 means on)
-	decimal
+	DecimalFlag
 	//4	Break flag (1 means Reset)
-	reset
+	ResetFlag
 	//5	UNUSED flag (ALWAYS 1)
-	unused
+	UnusedFlag
 	//6	Overflow flag (1 means overflow)
-	overflow
+	OverflowFlag
 	//7	Negative flag (1 means negative)
-	negative
+	NegativeFlag
 )
