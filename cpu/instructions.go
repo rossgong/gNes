@@ -49,6 +49,8 @@ func (cpu *Processor) ShiftLeft(operand byte) byte {
 	} else {
 		cpu.clearStatusFlags(CarryFlag)
 	}
+
+	return result
 }
 
 //Utility functions
