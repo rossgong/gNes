@@ -57,6 +57,14 @@ const (
 )
 
 //Utility functions
+func (cpu *Processor) setStatusFlags(mask byte) {
+	cpu.registers[A] = setBits(cpu.registers[Status], mask)
+}
+
+func (cpu *Processor) clearStatusFlags(mask byte) {
+	cpu.registers[A] = clearBits(cpu.registers[Status], mask)
+}
+
 func getBits(b byte, mask byte) byte {
 	return b & mask
 }

@@ -136,14 +136,6 @@ func (cpu *Processor) branchOnFlagClear(address memory.Address, flag byte) {
 	}
 }
 
-func (cpu *Processor) setStatusFlags(mask byte) {
-	cpu.registers[A] = setBits(cpu.registers[Status], mask)
-}
-
-func (cpu *Processor) clearStatusFlags(mask byte) {
-	cpu.registers[A] = clearBits(cpu.registers[Status], mask)
-}
-
 func (cpu *Processor) setZeroFlag(result byte) {
 	if result == 0 {
 		cpu.setStatusFlags(ZeroFlag)
