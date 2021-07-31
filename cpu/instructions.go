@@ -58,7 +58,7 @@ func (cpu *Processor) ShiftLeft(operand byte) byte {
 /*
 BCC
 
-take branch if carry is 0
+Branch if no carry (CarryFlag = 0)
 */
 func (cpu *Processor) BranchOnCarryClear(address memory.Address) {
 	cpu.branchOnFlagClear(address, CarryFlag)
@@ -67,7 +67,7 @@ func (cpu *Processor) BranchOnCarryClear(address memory.Address) {
 /*
 BCS
 
-take branch if carry is 0
+Branch if there is carry (CarryFlag = 1)
 */
 func (cpu *Processor) BranchOnCarrySet(address memory.Address) {
 	cpu.branchOnFlagSet(address, CarryFlag)
@@ -76,9 +76,9 @@ func (cpu *Processor) BranchOnCarrySet(address memory.Address) {
 /*
 BEQ
 
-take branch if carry is 0
+Branch if result is zero (ZeroFlag = 1)
 */
-func (cpu *Processor) BranchOnZero(address memory.Address) {
+func (cpu *Processor) BranchOnEqual(address memory.Address) {
 	cpu.branchOnFlagSet(address, ZeroFlag)
 }
 
@@ -95,6 +95,32 @@ func (cpu *Processor) BitTest(operand byte) {
 	cpu.setStatusFlags(operand & mask)
 
 	cpu.setZeroFlag(cpu.registers[A] & operand)
+}
+
+/*
+BMI
+Branch on Minus (NegativeFlag = 1)
+*/
+func (cpu *Processor) BranchOnNegative(address memory.Address) {
+	cpu.branchOnFlagSet(address, NegativeFlag)
+}
+
+/*
+BNE
+
+Branch if not Zero (ZeroFlag = 0)
+*/
+func (cpu *Processor) BranchOnNotEqual(address memory.Address) {
+	cpu.branchOnFlagClear(address, ZeroFlag)
+}
+
+/*
+BPL
+
+Branch if plus (NegativeFlag = 0)
+*/
+func (cpu *Processor) BranchOnPlus(address memory.Address) {
+	cpu.branchOnFlagClear(address, NegativeFlag)
 }
 
 //Utility functions
