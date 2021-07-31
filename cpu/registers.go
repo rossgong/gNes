@@ -43,7 +43,7 @@ const (
 	//1	Zero flag (1 means zero)
 	ZeroFlag = 1 << 1
 	//2	IRQ flag (1 means disable)
-	IrqFlag = 1 << 2
+	InterruptDisableFlag = 1 << 2
 	//3	Decimal flag Mode (1 means on)
 	DecimalFlag = 1 << 3
 	//4	Break flag (1 means Reset)
@@ -55,3 +55,16 @@ const (
 	//7	Negative flag (1 means negative)
 	NegativeFlag = 1 << 7
 )
+
+//Utility functions
+func getBits(b byte, mask byte) byte {
+	return b & mask
+}
+
+func setBits(b byte, mask byte) byte {
+	return b | mask
+}
+
+func clearBits(b byte, mask byte) byte {
+	return b &^ mask
+}

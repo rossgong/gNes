@@ -176,15 +176,3 @@ func (cpu *Processor) setNegativeFlag(result byte) {
 		cpu.clearStatusFlags(NegativeFlag)
 	}
 }
-
-func getBits(b byte, mask byte) byte {
-	return b & mask
-}
-
-func setBits(b byte, mask byte) byte {
-	return b | mask
-}
-
-func clearBits(b byte, mask byte) byte {
-	return b &^ mask
-}

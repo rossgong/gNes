@@ -1,6 +1,8 @@
 package cpu
 
 import (
+	"log"
+
 	"gongaware.org/gNES/memory"
 )
 
@@ -26,4 +28,13 @@ func (proc *Processor) InitializeRegisters() {
 
 	//Bit 5 is not used and always 1
 	proc.registers[Status] = 0b0010_0000
+}
+
+func (proc *Processor) Reset() {
+	proc.registers[Status] = setBits(proc.registers[Status], InterruptDisableFlag)
+	addr, err := proc.memory.ReadAddress(ResetVector)
+	if err != nil {
+		log.Fatal(err)
+	}
+	proc.pc = addr
 }
