@@ -4,6 +4,14 @@ import (
 	"gongaware.org/gNES/memory"
 )
 
+//Interrupt Vector Table
+//These are the memory addresses of the handler addresses
+const (
+	NMIVector    = 0xFFFA //+0xFFFB
+	ResetVector  = 0xFFFC //+0xFFFD
+	IRQBRKVector = 0xFFFE //+0xFFFF
+)
+
 type Processor struct {
 	registers [numRegisters]byte
 	pc        memory.Address
