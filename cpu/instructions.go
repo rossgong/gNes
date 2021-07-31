@@ -1,5 +1,7 @@
 package cpu
 
+import "gongaware.org/gNES/memory"
+
 /*
 ADC
 
@@ -44,7 +46,7 @@ func (cpu *Processor) ShiftLeft(operand byte) byte {
 
 	cpu.setNegativeFlag(result)
 	cpu.setZeroFlag(result)
-	if getBits(operand, 1<<7) != 0 {
+	if getBits(operand, NegativeFlag) != 0 {
 		cpu.setStatusFlags(CarryFlag)
 	} else {
 		cpu.clearStatusFlags(CarryFlag)
@@ -53,7 +55,46 @@ func (cpu *Processor) ShiftLeft(operand byte) byte {
 	return result
 }
 
+/*
+BCC
+
+take branch if carry is 0
+*/
+func (cpu *Processor) BranchOnCarryClear(address memory.Address) {
+	cpu.branchOnFlagClear(address, CarryFlag)
+}
+
+/*
+BCS
+
+take branch if carry is 0
+*/
+func (cpu *Processor) BranchOnCarrySet(address memory.Address) {
+	cpu.branchOnFlagSet(address, CarryFlag)
+}
+
+/*
+BEQ
+
+take branch if carry is 0
+*/
+func (cpu *Processor) BranchOnZero(address memory.Address) {
+	cpu.branchOnFlagSet(address, ZeroFlag)
+}
+
 //Utility functions
+func (cpu *Processor) branchOnFlagSet(address memory.Address, flag byte) {
+	if cpu.registers[Status]&flag == flag {
+		cpu.pc = address
+	}
+}
+
+func (cpu *Processor) branchOnFlagClear(address memory.Address, flag byte) {
+	if cpu.registers[Status]&flag == 0 {
+		cpu.pc = address
+	}
+}
+
 func (cpu *Processor) setStatusFlags(mask byte) {
 	cpu.registers[A] = setBits(cpu.registers[Status], mask)
 }
