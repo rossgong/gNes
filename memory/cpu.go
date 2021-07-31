@@ -51,7 +51,7 @@ func (memoryMap CPUMap) ReadAddress(operandAddr Address) (Address, error) {
 	if err != nil {
 		return Address(high), err
 	}
-	return (Address(high) << 8) + Address(low), err
+	return LittleEndianToAddress(low, high), err
 }
 
 func (memoryMap *CPUMap) Write(address Address, data byte) {
@@ -61,6 +61,15 @@ func (memoryMap *CPUMap) Write(address Address, data byte) {
 	default:
 		notSupported(address, "Unknown Mapping")
 	}
+}
+
+//Utility Functions
+func AddressToLittleEndian(address Address) [2]byte {
+	return [2]byte{byte(address & 0x00FF), byte(address >> 8)}
+}
+
+func LittleEndianToAddress(low byte, high byte) Address {
+	return (Address(high) << 8) | Address(low)
 }
 
 func notSupported(address Address, extra string) (byte, error) {
