@@ -82,6 +82,21 @@ func (cpu *Processor) BranchOnZero(address memory.Address) {
 	cpu.branchOnFlagSet(address, ZeroFlag)
 }
 
+/*
+BIT Test bits
+Bit 6+7 (Negative and overflow) are transferred
+The zero flag is then set according to A&operand
+*/
+func (cpu *Processor) BitTest(operand byte) {
+	var mask byte = OverflowFlag | NegativeFlag
+	//Clear the bits in order to mask the operand bits on
+	cpu.clearStatusFlags(mask)
+	//Set the bits with the operand masked
+	cpu.setStatusFlags(operand & mask)
+
+	cpu.setZeroFlag(cpu.registers[A] & operand)
+}
+
 //Utility functions
 func (cpu *Processor) branchOnFlagSet(address memory.Address, flag byte) {
 	if cpu.registers[Status]&flag == flag {
