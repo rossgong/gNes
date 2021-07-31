@@ -63,6 +63,12 @@ func (memoryMap *CPUMap) Write(address Address, data byte) {
 	}
 }
 
+func (memoryMap *CPUMap) WriteAddress(address Address, data Address) {
+	bytes := AddressToLittleEndian(data)
+	memoryMap.Write(address, bytes[0])
+	memoryMap.Write(address+1, bytes[1])
+}
+
 //Utility Functions
 func AddressToLittleEndian(address Address) [2]byte {
 	return [2]byte{byte(address & 0x00FF), byte(address >> 8)}
