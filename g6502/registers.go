@@ -1,4 +1,4 @@
-package cpu
+package g6502
 
 //Register labels
 const (
