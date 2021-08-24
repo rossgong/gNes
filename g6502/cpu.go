@@ -1,17 +1,7 @@
 package g6502
 
 import (
-	"log"
-
 	"gongaware.org/gNES/memory"
-)
-
-//Interrupt Vector Table
-//These are the memory addresses of the handler addresses
-const (
-	NMIVector    = 0xFFFA //+0xFFFB
-	ResetVector  = 0xFFFC //+0xFFFD
-	IRQBRKVector = 0xFFFE //+0xFFFF
 )
 
 const (
@@ -29,13 +19,4 @@ type Processor struct {
 
 func (proc *Processor) InitializeRegisters() {
 	proc.registers[Status] = initialStatus
-}
-
-func (proc *Processor) Reset() {
-	proc.registers[Status] = setBits(proc.registers[Status], InterruptDisableFlag)
-	addr, err := proc.memory.ReadAddress(ResetVector)
-	if err != nil {
-		log.Fatal(err)
-	}
-	proc.pc = addr
 }
